@@ -16,6 +16,24 @@ day1_part1(File, Frequency) :-
     computeFrequency(LNums,Frequency)
     ).
 
+%%%%% PARSIN THE INPUT
+
+parse([],[]) :- !.
+% removes blanks
+parse([32|LCodes],Num) :- !, parse(LCodes,Num).
+% removes tabs
+parse([9|LCodes],Num) :- !, parse(LCodes,Num).
+% remove +
+parse([43|LCodes],Num) :- !, parse(LCodes,Num).
+% deal with -
+parse([45|LCodes],Num) :- !, parse(LCodes,N), Num is 0-N.
+parse(LCodes,Num) :- !, number_codes(Num,LCodes).
+
+number([],Acc,N,[]) :- !, atom_codes(N,Acc).
+number([X|XS],Acc,N,Rest) :- X >= 48, X =< 57, !, append(Acc,[X],Acc1), number(XS,Acc1,N,Rest).
+number([X|XS],Acc,N,[X|XS]) :- atom_codes(N,Acc), !.
+
+%%%%% END PARSING
 computeFrequency(LNums,Frequency) :- sum(LNums,Frequency).
 
 sum([],0).
