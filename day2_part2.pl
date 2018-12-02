@@ -1,3 +1,5 @@
+:- use_module(library(lists)), use_module(library(ordsets)).
+
 day2_part2(File, Res) :-
     retractall(row(_)),
     open(File, read, Stream),
